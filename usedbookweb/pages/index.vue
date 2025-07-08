@@ -4,9 +4,9 @@
             <div class="headCenterLeft">
                 <NuxtLink to="/" class="nuxtlink">
                     <div class="headCenterLeftTitle">
-                    <img src="/favicon.ico"/>
-                    <span class="title">Cyuuko</span>
-                </div>
+                        <img src="/favicon.ico"/>
+                        <span class="title">Cyuuko</span>
+                    </div>
                 </NuxtLink>
                 <ul>
                     <li>
@@ -34,34 +34,45 @@
                         </div>
                     </NuxtLink>
                 </el-tooltip>
-                <el-tooltip content="我的消息" placement="bottom" :show-after="200" :hide-after="0">
-                    <NuxtLink to="/message" class="nuxtlink">
-                        <div class="headCenterRightItem">
-                            <el-icon size="30" color="#71717a"><Message /></el-icon>
-                        </div>
-                    </NuxtLink>
-                </el-tooltip>
-                <el-popover
-                placement="bottom-end"
-                trigger="hover"
-                :width="200"
-                >
-                    <template #reference>
-                        <NuxtLink to="/user/1" class="nuxtlink" style="height: 60px;">
-                            <el-avatar src="/爱丽丝头像.png" class="cursor-pointer" style="--size: 90%; height: var(--size); width: auto;"  />
+                <template v-if="auth.isLoggedIn">
+                    <el-tooltip content="我的消息" placement="bottom" :show-after="200" :hide-after="0">
+                        <NuxtLink to="/message" class="nuxtlink">
+                            <div class="headCenterRightItem">
+                                <el-icon size="30" color="#71717a"><Message /></el-icon>
+                            </div>
                         </NuxtLink>
-                    </template>
-                    <div class="user-menu">
-                        <NuxtLink to="/user/1" class="nuxtlink menuItem">
-                            <el-icon><User /></el-icon>
-                            用户主页
-                        </NuxtLink>
-                        <div class="logOff">
-                            <el-icon><ArrowLeftBold /></el-icon>
-                            退出登录
+                    </el-tooltip>
+                    <el-popover
+                    placement="bottom-end"
+                    trigger="hover"
+                    :width="200"
+                    >
+                        <template #reference>
+                            <NuxtLink to="/user/894" class="nuxtlink" style="height: 60px;">
+                                <el-avatar src="/爱丽丝头像.png" class="cursor-pointer" style="--size: 90%; height: var(--size); width: auto;"  />
+                            </NuxtLink>
+                        </template>
+                        <div class="user-menu">
+                            <NuxtLink to="/user/894" class="nuxtlink menuItem">
+                                <el-icon><User /></el-icon>
+                                用户主页
+                            </NuxtLink>
+                            <div class="logOff" @click="logoutBto">
+                                <el-icon><ArrowLeftBold /></el-icon>
+                                退出登录
+                            </div>
                         </div>
-                    </div>
-                </el-popover>
+                    </el-popover>
+                </template>
+                <template v-else>
+                    <el-tooltip content="登录/注册" placement="bottom" :show-after="200" :hide-after="0">
+                        <NuxtLink to="/login" class="nuxtlink">
+                            <div class="headCenterRightItem">
+                                <el-icon size="30" color="#71717a"><User /></el-icon>
+                            </div>
+                        </NuxtLink>
+                    </el-tooltip>
+                </template>
             </div>
         </div>
     </div>
@@ -69,7 +80,11 @@
 </template>
     
 <script setup lang='ts'>
-    
+    import { useAuthStore } from '~/stores/auth';
+    const auth = useAuthStore()
+    function logoutBto(){
+        auth.logout()
+    }
 </script>
     
 <style scoped>

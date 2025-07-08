@@ -44,7 +44,6 @@
                 </el-carousel>
             </div>
         </div>
-        <button @click="cs">你好</button>
         <section>
             <IndexContent/>
         </section>
@@ -52,13 +51,7 @@
 </template>
     
 <script setup lang='ts'>
-import { ref } from 'vue';
-import axios from 'axios';
-    async function cs(){
-        const { data } = await useFetch('/api/cs', {
-        baseURL: 'http://localhost:8000' // 后端独立域名
-    });
-    }
+    import { ref } from 'vue';
     const featuredBooks = ref([
   {
     title: 'JavaScript高级程序设计',

@@ -11,7 +11,9 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "bcryptjs": "^3.0.2",
     "cors": "^2.8.5",
+    "dayjs": "^1.11.13",
     "express": "^5.1.0",
     "fs": "^0.0.1-security",
     "mongoose": "^8.16.2",

@@ -4,8 +4,10 @@ import { fileURLToPath } from 'url'
 import fs from 'fs'
 import { createServer } from 'http'
 import cors from 'cors'
+import dayjs from 'dayjs'
 
 import { db } from './db.js'
+import posts from './mongodb_models/posts.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -34,14 +36,19 @@ db().then(async() => {
     server.listen(PORT, () => {
         console.log(`Server running on http://localhost:${PORT}`)
     })
+    // posts.create({
+    //   title:'测试标题',
+    //   content:'测试内容',
+    //   authorId:'894',
+    //   createAt:dayjs().format('YYYY-MM-DD'),
+    //   updateAt:dayjs().format('YYYY-MM-DD')
+    // })
 })
 
 app.use(express.static(path.resolve(__dirname, '../usedbookweb/.output/public')));
 
+import registerRouter from './routes/register.js'
+app.use('/api', registerRouter)
 
-app.get('/api/cs', (req, res) => {
-    console.log('调用成功')
-    res.json({
-        win:'yes'
-    })
-})
+import loginRouter from './routes/login.js'
+app.use('/api', loginRouter)
