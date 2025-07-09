@@ -44,14 +44,22 @@
                 </el-carousel>
             </div>
         </div>
+        <button @click="cs">测试</button>
         <section>
             <IndexContent/>
         </section>
     </div>
+    
 </template>
     
 <script setup lang='ts'>
     import { ref } from 'vue';
+    onMounted(async ()=>{
+        await useCheckAuth()
+    })
+    async function cs(){
+        await useCheckAuth()
+    }
     const featuredBooks = ref([
   {
     title: 'JavaScript高级程序设计',

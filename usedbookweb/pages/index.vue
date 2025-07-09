@@ -77,14 +77,13 @@
         </div>
     </div>
     <NuxtPage class="fenGe"/>
+    
 </template>
     
 <script setup lang='ts'>
     import { useAuthStore } from '~/stores/auth';
     const auth = useAuthStore()
-    function logoutBto(){
-        auth.logout()
-    }
+    
 </script>
     
 <style scoped>

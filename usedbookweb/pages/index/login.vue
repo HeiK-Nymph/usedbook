@@ -34,6 +34,12 @@
     import { ref } from 'vue';
     import { useAuthStore } from '#imports';
     import { navigateTo } from '#imports';
+    import { useCheckAuth } from '#imports';
+    
+
+    onMounted(async ()=>{
+        await useCheckAuth()
+    })
     const auth = useAuthStore()
     const form = ref({
         email:"",
@@ -41,36 +47,40 @@
     })
     async function loginBto(){
         if (form.value.email === "" || form.value.password === ""){
-            ElMessage.warning('请输入账号或密码')
+            
+            
+            ElMessage.warning({
+                message:'请输入账号或密码',
+                offset:50
+            })
             return
         }
         try{
             const data = await $fetch('/api/login',{
-                baseURL:'http://192.168.1.2:8000',
                 method:'post',
                 body:form.value
-            }) as {res: String}
-            const {res} = data
+            }) as {res: string, accessToken:string}
+            const {res, accessToken} = data
             if (res === '2'){
+                form.value.email = ""
+                form.value.password = ""
                 ElMessage.error('账号或者密码错误')
             }
             else if (res === '1'){
                 ElMessage.success('登录成功')
-                // navigateTo('/')
+                auth.isLoggedIn = true
+                localStorage.setItem('accessToken',accessToken)
+                navigateTo('/')
+                
             }
             else{
+                form.value.email = ""
+                form.value.password = ""
                 ElMessage.error('未知错误')
             }
         }catch(err){
             console .error(err)
         }
-        // const userInfo = {
-        //     id:form.value.email,
-        //     avatar:"",
-        //     name:form.value.email
-        // }
-        // auth.login(userInfo)
-        // console.log(localStorage.getItem('isLoggedIn'))
     }
 </script>
     
