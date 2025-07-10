@@ -54,11 +54,13 @@
     
 <script setup lang='ts'>
     import { ref } from 'vue';
-    onMounted(async ()=>{
+    
+    
+    onBeforeMount(async ()=>{
         await useCheckAuth()
     })
     async function cs(){
-        await useCheckAuth()
+        
     }
     const featuredBooks = ref([
   {

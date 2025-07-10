@@ -44,15 +44,15 @@ router.post('/login', async (req, res)=>{
                 
                 
 
-                return res.json({res:'1', accessToken:accessToken,refreshToken:refreshToken})
+                return res.json({res:'1', accessToken:accessToken,refreshToken:refreshToken, userId:user._id})
             }
             else{
-                return res.json({res:'2', accessToken:'undefine', refreshToken:'undefine'})
+                return res.json({res:'2', accessToken:'undefine', refreshToken:'undefine',userId:null})
             }
         }
     }catch(err){
         console.error(err)
-        return res.json({res:'3', accessToken:'undefine'})
+        return res.json({res:'3', accessToken:'undefine',userId:null})
     }
 })
 

@@ -35,10 +35,11 @@
     import { useAuthStore } from '#imports';
     import { navigateTo } from '#imports';
     import { useCheckAuth } from '#imports';
-    
 
-    onMounted(async ()=>{
-        await useCheckAuth()
+    onBeforeMount(async ()=>{
+        if (await useCheckAuth()){
+            navigateTo('/')
+        }
     })
     const auth = useAuthStore()
     const form = ref({
@@ -59,16 +60,23 @@
             const data = await $fetch('/api/login',{
                 method:'post',
                 body:form.value
-            }) as {res: string, accessToken:string}
-            const {res, accessToken} = data
+            }) as {res: string, accessToken:string, userId:string}
+            const {res, accessToken, userId} = data
             if (res === '2'){
                 form.value.email = ""
                 form.value.password = ""
-                ElMessage.error('账号或者密码错误')
+                ElMessage.error({
+                    message:'账号或者密码错误',
+                    offset:50
+                })
             }
             else if (res === '1'){
-                ElMessage.success('登录成功')
+                ElMessage.success({
+                    message:'登录成功',
+                    offset:50
+                })
                 auth.isLoggedIn = true
+                auth.userId = userId
                 localStorage.setItem('accessToken',accessToken)
                 navigateTo('/')
                 
@@ -76,9 +84,16 @@
             else{
                 form.value.email = ""
                 form.value.password = ""
-                ElMessage.error('未知错误')
+                ElMessage.error({
+                    message:'未知错误',
+                    offset:50
+                })
             }
         }catch(err){
+            ElMessage.error({
+                message:'未知错误',
+                offset:50
+            })
             console .error(err)
         }
     }

@@ -51,3 +51,6 @@ app.use('/api', loginRouter)
 
 import authVerif from './routes/authVerify.js'
 app.use('/api',authVerif )
+
+import logout from './routes/logout.js'
+app.use('/api', logout)

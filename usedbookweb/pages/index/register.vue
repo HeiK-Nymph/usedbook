@@ -55,20 +55,28 @@
     const isAgree = ref([])
     async function registerBto(){
         if (isAgree.value.length === 0) {
-            ElMessage.warning('请先同意用户协议')
+            ElMessage.warning({
+                message:'请先同意用户协议',
+                offset:50
+            })
             return
         }
         if (form.value.email === "" || form.value.password === ""){
-            ElMessage.warning('请输入账号或密码')
+            ElMessage.warning({
+                message:'请输入账号或密码',
+                offset:50
+            })
             return
         }
         if (form.value.captcha === ""){
-            ElMessage.warning('请输入验证码')
+            ElMessage.warning({
+                message:'请输入验证码',
+                offset:50
+            })
             return
         }
         try{
             const data = await $fetch('/api/register',{
-                baseURL:'http://192.168.1.2:8000',
                 method:'post',
                 body:form.value
             }) as {res: String}
@@ -76,15 +84,32 @@
                 navigateTo('/login')
             }
             else if (data.res === '2'){
-                ElMessage.error('验证码错误')
+                ElMessage.error({
+                    message:'验证码错误',
+                    offset:50
+                })
+                form.value.captcha = ""
             }
             else if (data.res === '4'){
-                ElMessage.error('邮箱已存在')
+                ElMessage.error({
+                    message:'邮箱已被注册',
+                    offset:50
+                })
+                form.value.password = ""
             }
             else{
-                ElMessage.error('未知错误')
+                ElMessage.error({
+                    message:'未知错误',
+                    offset:50
+                })
+                form.value.password = ""
             }
         }catch(err){
+            ElMessage.error({
+                message:'未知错误',
+                offset:50
+            })
+            form.value.password = ""
             console.error(err)
         }
         

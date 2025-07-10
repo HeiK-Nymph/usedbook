@@ -4,7 +4,7 @@ export default defineEventHandler(async (event)=>{
         baseURL:'http://192.168.1.2:8000',
         method:'POST',
         body:body
-    }) as {res:string, accessToken:string, refreshToken:string}
+    }) as {res:string, accessToken:string, refreshToken:string, userId:string}
 
     
     setCookie(event, 'refreshToken', data.refreshToken,{
@@ -14,5 +14,5 @@ export default defineEventHandler(async (event)=>{
     })
     
 
-    return {res:data.res, accessToken:data.accessToken}
+    return {res:data.res, accessToken:data.accessToken, userId:data.userId}
 })

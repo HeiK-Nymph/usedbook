@@ -25,6 +25,7 @@
                         </NuxtLink>
                     </li>
                 </ul>
+                <button @click="cs">测试</button>
             </div>
             <div class="headCenterRight">
                 <el-tooltip content="搜索书籍" placement="bottom" :show-after="200" :hide-after="0" >
@@ -48,12 +49,12 @@
                     :width="200"
                     >
                         <template #reference>
-                            <NuxtLink to="/user/894" class="nuxtlink" style="height: 60px;">
+                            <NuxtLink :to="{path:'/user/' + auth.userId}" class="nuxtlink" style="height: 60px;">
                                 <el-avatar src="/爱丽丝头像.png" class="cursor-pointer" style="--size: 90%; height: var(--size); width: auto;"  />
                             </NuxtLink>
                         </template>
                         <div class="user-menu">
-                            <NuxtLink to="/user/894" class="nuxtlink menuItem">
+                            <NuxtLink :to="{path:'/user/' + auth.userId}" class="nuxtlink menuItem">
                                 <el-icon><User /></el-icon>
                                 用户主页
                             </NuxtLink>
@@ -84,6 +85,21 @@
     import { useAuthStore } from '~/stores/auth';
     const auth = useAuthStore()
     
+    function cs(){
+        
+    }
+
+    async function logoutBto(){
+        try{
+            await useLogout()
+            ElMessage.success({
+                message:'登出成功',
+                offset:50
+            })
+        }catch(e){
+            console.error(e)
+        }
+    }
 </script>
     
 <style scoped>

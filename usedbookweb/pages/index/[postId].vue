@@ -6,7 +6,7 @@
     
 <script setup lang='ts'>
     const route = useRoute()
-    const bookId = route.params.id
+    const bookId = route.params.postId
 </script>
     
 <style scoped>
