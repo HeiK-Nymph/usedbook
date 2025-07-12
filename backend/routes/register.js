@@ -26,7 +26,7 @@ router.post('/register', async (req, res)=>{
             passwordHash:passwordHash,
             status:'active',
             roles:'user',
-            avatar:'../uploads/avatar/default.png',
+            avatar:'/avatar/default.png',
             bio:'该用户太懒了，还没有设置简介',
             meta:{
                 createAt:dayjs().format('YYYY-MM-DD'),

@@ -42,6 +42,8 @@ db().then(async() => {
 })
 
 app.use(express.static(path.resolve(__dirname, '../usedbookweb/.output/public')));
+app.use('/api',express.static(path.resolve(__dirname, './uploads')));
+
 
 import registerRouter from './routes/register.js'
 app.use('/api', registerRouter)
@@ -54,3 +56,6 @@ app.use('/api',authVerif )
 
 import logout from './routes/logout.js'
 app.use('/api', logout)
+
+import avatarGet from './routes/avatarGet.js'
+app.use('/api',avatarGet)

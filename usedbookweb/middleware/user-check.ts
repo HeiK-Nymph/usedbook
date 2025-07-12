@@ -1,5 +1,5 @@
 export default defineNuxtRouteMiddleware((to) => {
-    if (to.path === '/user' || to.path === '/user/') {
-    return navigateTo('/')
-  }
+    if (to.path === '/user' || to.path === '/user/'){
+        return navigateTo('/')
+    }
 })

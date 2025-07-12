@@ -1,14 +1,14 @@
 <template>
-    <div class="commentMain"></div>
+    <div class="main"></div>
 </template>
     
 <script setup lang='ts'>
     
 </script>
     
-<style scoped>
-    .commentMain{
+<style>
+    .main{
         height: 400px;
-        background-color: blue;
+        background-color: darkgoldenrod;
     }
 </style>

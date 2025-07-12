@@ -1,200 +1,209 @@
 <template>
-    <div class="head">
-        <div class="headCenter">
-            <div class="headCenterLeft">
-                <NuxtLink to="/" class="nuxtlink">
-                    <div class="headCenterLeftTitle">
-                        <img src="/favicon.ico"/>
-                        <span class="title">Cyuuko</span>
+    <div class="indexMain">
+        <div class="indexTop">
+            <div class="indexTopLeft">
+                <div class="indexTopLeftTop">
+                    <div class="indexTopLeftTopItme1">
+                        <el-icon color="blue" size="20"><MagicStick /></el-icon>
+                        <span class="Item1Font">欢迎来到Cyuuko</span>
                     </div>
-                </NuxtLink>
-                <ul>
-                    <li>
-                        <NuxtLink to="/usedbooks" :class="{ active: $route.path === '/usedbooks', nuxtlink: $route.path !== '/usedbooks', overFlow:true }" >
-                            所有二手书
-                        </NuxtLink>
-                    </li>
-                    <li>
-                        <NuxtLink to="/tag" :class="{ active: $route.path === '/tag', nuxtlink: $route.path !== '/tag',overFlow:true }">
-                            二手书标签
-                        </NuxtLink>
-                    </li>
-                    <li>
-                        <NuxtLink to="/doc" :class="{ active: $route.path === '/doc', nuxtlink: $route.path !== '/doc',overFlow:true }">
-                            帮助文档
-                        </NuxtLink>
-                    </li>
-                </ul>
-                <button @click="cs">测试</button>
-            </div>
-            <div class="headCenterRight">
-                <el-tooltip content="搜索书籍" placement="bottom" :show-after="200" :hide-after="0" >
-                    <NuxtLink to="/search" class="nuxtlink">
-                        <div class="headCenterRightItem">
-                            <el-icon size="30" color="#71717a"><Search /></el-icon>
-                        </div>
+                    <div class="indexTopLeftTopItme2">
+                        <span class="Item2Font">一站式二手书交流社区！</span>
+                    </div>
+                    <div class="indexTopLeftTopItme3">
+                        <span class="Item3Font">免费，点对点的二手书资源交流社区</span>
+                    </div>
+                </div>
+                <div class="indexTopLeftFoot">
+                    <NuxtLink to="/tag" class="nuxtlink indexTopLeftFootItem1">
+                        
+                            <el-icon><PriceTag /></el-icon>
+                            标签
+                        
                     </NuxtLink>
-                </el-tooltip>
-                <template v-if="auth.isLoggedIn">
-                    <el-tooltip content="我的消息" placement="bottom" :show-after="200" :hide-after="0">
-                        <NuxtLink to="/message" class="nuxtlink">
-                            <div class="headCenterRightItem">
-                                <el-icon size="30" color="#71717a"><Message /></el-icon>
-                            </div>
-                        </NuxtLink>
-                    </el-tooltip>
-                    <el-popover
-                    placement="bottom-end"
-                    trigger="hover"
-                    :width="200"
-                    >
-                        <template #reference>
-                            <NuxtLink :to="{path:'/user/' + auth.userId}" class="nuxtlink" style="height: 60px;">
-                                <el-avatar src="/爱丽丝头像.png" class="cursor-pointer" style="--size: 90%; height: var(--size); width: auto;"  />
-                            </NuxtLink>
-                        </template>
-                        <div class="user-menu">
-                            <NuxtLink :to="{path:'/user/' + auth.userId}" class="nuxtlink menuItem">
-                                <el-icon><User /></el-icon>
-                                用户主页
-                            </NuxtLink>
-                            <div class="logOff" @click="logoutBto">
-                                <el-icon><ArrowLeftBold /></el-icon>
-                                退出登录
-                            </div>
-                        </div>
-                    </el-popover>
-                </template>
-                <template v-else>
-                    <el-tooltip content="登录/注册" placement="bottom" :show-after="200" :hide-after="0">
-                        <NuxtLink to="/login" class="nuxtlink">
-                            <div class="headCenterRightItem">
-                                <el-icon size="30" color="#71717a"><User /></el-icon>
-                            </div>
-                        </NuxtLink>
-                    </el-tooltip>
-                </template>
+                    <NuxtLink to="/doc" class="nuxtlink indexTopLeftFootItem2">
+                        
+                            <el-icon><Document /></el-icon>
+                            文档
+                        
+                    </NuxtLink>
+                </div>
+            </div>
+            <div class="indexTopRight">
+                <el-carousel
+                :interval="4000"
+                
+                height="350px"
+                >
+                <el-carousel-item v-for="(book, index) in featuredBooks" :key="index">
+                    <div class="bookImg" style="background-image: url(/爱丽丝头像.png);">
+                        {{ book.title }}
+                    </div>
+                    
+                </el-carousel-item>
+                </el-carousel>
             </div>
         </div>
+        <button @click="cs">测试</button>
+        <section>
+            <IndexContent/>
+        </section>
     </div>
-    
-    <NuxtPage class="fenGe"/>
     
 </template>
     
 <script setup lang='ts'>
-    import { useAuthStore } from '~/stores/auth';
-    const auth = useAuthStore()
+    definePageMeta({
+        layout:'default'
+    })
     
-    function cs(){
+    import { ref } from 'vue';
+    
+    
+    onBeforeMount(async ()=>{
+        await useCheckAuth()
+    })
+    async function cs(){
         
     }
-
-    async function logoutBto(){
-        try{
-            await useLogout()
-            ElMessage.success({
-                message:'登出成功',
-                offset:50
-            })
-        }catch(e){
-            console.error(e)
-        }
-    }
+    const featuredBooks = ref([
+  {
+    title: 'JavaScript高级程序设计',
+    price: 68.00,
+    author: 'Nicholas C. Zakas',
+    image: 'https://img1.doubanio.com/view/subject/s/public/s8958650.jpg'
+  },
+  {
+    title: 'Vue.js设计与实现',
+    price: 89.00,
+    author: '霍春阳',
+    image: 'https://img9.doubanio.com/view/subject/s/public/s34351394.jpg'
+  },
+  {
+    title: 'React进阶之路',
+    price: 59.00,
+    author: '徐超',
+    image: 'https://img2.doubanio.com/view/subject/s/public/s29814021.jpg'
+  },
+  {
+    title: 'TypeScript入门与实战',
+    price: 79.00,
+    author: '钟胜平',
+    image: 'https://img3.doubanio.com/view/subject/s/public/s33642415.jpg'
+  }
+])
 </script>
     
 <style scoped>
-    .overFlow{
-        white-space: nowrap; 
-        overflow: hidden;
+    .bookImg{
+        width: 100%;
+        height: 100%;
+        background-repeat: no-repeat;
+        background-size: cover;
+        border-radius: 10px;
+        padding: 10px;
     }
-    .fenGe{
-        margin-top: 60px;
+    .indexTopRight{
+        flex-grow: 1;
     }
-    .active{
-        text-decoration: none;
-        color: #6c9ef3;
-        font-weight: bold;
+    .indexTopLeftFootItem2{
+        background-color: #dcf2e2;
+        line-height: 40px;
+        height: 40px;
+        padding: 10px;
+        width: 40%;
+        text-align: center;
+        border-radius: 20px;
+        box-shadow: 0 2px 6px;
+        font-weight: 800;
+        font-size: 24px;
+        color:#559464
+
     }
-    .headCenterRightItem{
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        height: 60px;
-        width: 60px;
+    .indexTopLeftFootItem2:hover{
+        background-color: #e2f6e6;
     }
-    .headCenterRightItem:hover{
-        background-color: #eeeeef;
+    .indexTopLeftFootItem1{
+        background-color: #d4e3fc;
+        line-height: 40px;
+        height: 40px;
+        padding: 10px;
+        width: 40%;
+        text-align: center;
+        border-radius: 20px;
+        box-shadow: 0 2px 6px;
+        color:#4d7ed0;
+        font-weight: 800;
+        font-size: 24px;
     }
-    .logOff{
-        cursor: pointer;
-        padding: 3px;
-        border-radius: 8px;
-    }
-    .logOff:hover{
-        background-color: #e70b5d;
-        color: white;
-    }
-    .menuItem{
-        padding: 3px;
-        border-radius: 8px;
-    }
-    .menuItem:hover{
-        background-color: #d4d4d8;
-    }
-    .cursor-pointer{
-        cursor: pointer;
-    }
-    .user-menu {
-        display: flex;
-        flex-direction: column;
+    .indexTopLeftFootItem1:hover{
+        background-color: #dce8fd;
     }
     .nuxtlink{
         text-decoration: none;
-        color: inherit;
+        
     }
-    .title{
-        font-weight: bold;
-    }
-    .headCenterLeft{
+    .indexTopLeftFoot{
         display: flex;
-        width: 400px;
-        align-items: center;
         justify-content: space-between;
     }
-    .headCenterLeft ul {
-        list-style: none; /* 移除默认的项目符号 */
-        display: flex; /* 将列表项横向排列 */
-        gap: 20px; /* 列表项之间的间距 */
-        padding: 0; /* 移除默认的内边距 */
-        margin: 0; /* 移除默认的外边距 */
+    .Item3Font{
+        color:#6b6976
     }
-    .headCenterLeftTitle{
+    .Item2Font{
+        color:#4a49d7;
+        font-weight: 1000;
+        font-size: 40px;
+        white-space: nowrap; 
+    }
+    .Item1Font{
+        background-color: #b4c8f6;
+        border-radius: 10px;
+        padding: 4px 10px;
+    }
+    
+    .indexTopLeftTopItme2{
         display: flex;
         align-items: center;
-        gap: 5px;
-        font-size: 17px;
+        flex-grow: 1;
     }
-    .headCenterRight{
-        display: flex;
-        width: 250px;
+    .indexTopLeftTopItme1{
+        color: blue;
         align-items: center;
-        justify-content: space-between;
-    }
-    .headCenter{
         display: flex;
-        width: 78%;
-        justify-content: space-between;
     }
-    .head{
-        position: fixed;
-        justify-content: center;
-        top: 0;
-        width: 100%;
-        z-index: 9999;
+    
+    .indexTopLeftTop{
+        height: 65%;
+        color: #daf3e1;
+        background-image: linear-gradient(135deg,#d5e2fb ,#daf3e1);
+        border-radius: 20px;
+        padding: 10px;
         display: flex;
-        height: 60px;
-        background-color: rgba(255, 255, 255, 0.8); /* 半透明背景 */
-        backdrop-filter: blur(10px); /* 模糊效果 */
+        flex-direction: column;
+        
+    }
+    .indexTopLeft{
+        display: flex;
+        flex-direction: column;
+        width: 50%;
+        gap: 20px;
+        justify-content: space-between;
+        overflow: hidden;
+        padding-bottom: 5px;
+        padding-right: 5px;
+    }
+    
+    .indexTop{
+        display: flex;
+        padding-bottom: 10px;
+        height: 350px;
+    }
+    .indexMain{
+        display: flex;
+        flex-direction: column;
+        height: 800px;
+        margin-left: 5%;
+        margin-right: 5%;
     }
 </style>
