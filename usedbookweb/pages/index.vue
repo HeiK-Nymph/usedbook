@@ -77,6 +77,7 @@
             </div>
         </div>
     </div>
+    
     <NuxtPage class="fenGe"/>
     
 </template>
