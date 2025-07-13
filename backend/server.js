@@ -57,5 +57,5 @@ app.use('/api',authVerif )
 import logout from './routes/logout.js'
 app.use('/api', logout)
 
-import avatarGet from './routes/avatarGet.js'
+import avatarGet from './routes/userInfoGet.js'
 app.use('/api',avatarGet)

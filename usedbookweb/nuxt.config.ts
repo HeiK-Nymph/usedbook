@@ -10,6 +10,7 @@ export default defineNuxtConfig({
   elementPlus:{
     globalConfig:{
       zIndex:10000,
-    }
+    },
+    defaultLocale:'zh-cn'
   }
 })

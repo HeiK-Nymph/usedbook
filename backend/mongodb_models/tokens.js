@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const tokenSchema = mongoose.Schema({
-    userId:String,
+    userId:mongoose.Schema.Types.ObjectId,
     token:String,
     createdAt:String,
     expiresAt:String

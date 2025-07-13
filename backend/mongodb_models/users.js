@@ -21,6 +21,42 @@ const userSchema = mongoose.Schema({
     },
     avatar:String,
     bio:String,
+    followers:[
+        {
+            type:mongoose.Schema.Types.ObjectId,
+            ref:'users'
+        }
+    ],
+    following:[
+        {
+            type:mongoose.Schema.Types.ObjectId,
+            ref:'users'
+        }
+    ],
+    pubposts:[
+        {
+            type:mongoose.Schema.Types.ObjectId,
+            ref:'posts'
+        }
+    ],
+    favoposts:[
+        {
+            type:mongoose.Schema.Types.ObjectId,
+            ref:'posts'
+        }
+    ],
+    messages:[
+        {
+            type:mongoose.Schema.Types.ObjectId,
+            ref:'messages'
+        }
+    ],
+    comments:[
+        {
+            type:mongoose.Schema.Types.ObjectId,
+            ref:'comments'
+        }
+    ],
     meta:{
         createAt:String,
         updateAt:String,

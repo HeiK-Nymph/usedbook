@@ -3,7 +3,7 @@ import mongoose, { mongo } from "mongoose";
 const postSchema = new mongoose.Schema({
     title:String,
     content:String,
-    authorId:String,
+    authorId:mongoose.Schema.Types.ObjectId,
     createAt:String,
     updateAt:String
 })
