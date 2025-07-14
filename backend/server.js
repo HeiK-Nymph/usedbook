@@ -59,3 +59,9 @@ app.use('/api', logout)
 
 import avatarGet from './routes/userInfoGet.js'
 app.use('/api',avatarGet)
+
+import unFollow from './routes/unFollow.js'
+app.use('/api', unFollow)
+
+import addFollow from './routes/addFollow.js'
+app.use('/api', addFollow)

@@ -34,7 +34,69 @@
             <div class="joinDate">
                 <span class="joinDateItem"><el-icon><Calendar /></el-icon>加入于{{ userData?.meta.createAt }}</span>
             </div>
+            <div class="mainLeftBio" style="margin: 30px 0 10px 0;">
+                {{ userData?.bio }}
+            </div>
             <hr style="width: 100%;">
+            
+            <div class="mainLeftFooter">
+                <div class="mainLeftFooterEdit" v-if="auth.userId === route.params.userId">
+                    <div style="width: 100%; display: flex; flex-direction: column;">
+                        <el-button type="primary" plain><el-icon><EditPen /></el-icon><span>编辑信息</span></el-button>
+                    </div>
+                    <div style="width: 100%; display: flex; flex-direction: column; margin-top: 10px;">
+                        <el-button type="primary"><el-icon><Upload /></el-icon><span>发布帖子</span></el-button>
+                    </div>
+                </div>
+                <div v-else>
+                    <div @click="changleUnFollow" v-if="userData?.followers.some(follower => follower._id === auth.userId)" style="width: 100%; display: flex; flex-direction: column;">
+                        <el-button type="primary" plain><el-icon><Select /></el-icon><span>已关注</span></el-button>
+                    </div>
+                    <div @click="changleAddFollow" v-else style="width: 100%; display: flex; flex-direction: column;">
+                        <el-button type="primary" plain><el-icon><Plus /></el-icon><span>关注</span></el-button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="mainRight">
+            <div class="mainRightHeader">
+                <div class="mainRightHeaderItem">
+                    <div class="mainRightHeaderItemLeft">
+                        <el-icon><DocumentCopy /></el-icon>
+                    </div>
+                    <div class="mainRightHeaderItemRight">
+                        <span class="mainRightHeaderItemRightNumber">{{ pubpostsCnt }}</span>
+                        <span class="mainRightHeaderItemRightTip">发布帖子</span>
+                    </div>
+                </div>
+                <div class="mainRightHeaderItem">
+                    <div class="mainRightHeaderItemLeft">
+                        <el-icon><ChatRound /></el-icon>
+                    </div>
+                    <div class="mainRightHeaderItemRight">
+                        <span class="mainRightHeaderItemRightNumber">{{ commentsCnt }}</span>
+                        <span class="mainRightHeaderItemRightTip">评论</span>
+                    </div>
+                </div>
+                <div class="mainRightHeaderItem">
+                    <div class="mainRightHeaderItemLeft">
+                        <el-icon><ChatDotSquare /></el-icon>
+                    </div>
+                    <div class="mainRightHeaderItemRight">
+                        <span class="mainRightHeaderItemRightNumber">{{ messagesCnt }}</span>
+                        <span class="mainRightHeaderItemRightTip">消息</span>
+                    </div>
+                </div>
+                <div class="mainRightHeaderItem">
+                    <div class="mainRightHeaderItemLeft">
+                        <el-icon><Star /></el-icon>
+                    </div>
+                    <div class="mainRightHeaderItemRight">
+                        <span class="mainRightHeaderItemRightNumber">{{ favopostsCnt }}</span>
+                        <span class="mainRightHeaderItemRightTip">收藏</span>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     
@@ -57,12 +119,21 @@
         avatar:string;
         username:string;
     }
+    interface anthorArr{
+        _id:string
+    }
     interface userInfo{
+        _id:string;
         avatar:string;
         username:string;
         roles:string;
+        bio:string;
         followers:Array<follow>;
         following:Array<follow>;
+        pubposts:Array<anthorArr>;
+        favoposts:Array<anthorArr>;
+        messages:Array<anthorArr>;
+        comments:Array<anthorArr>;
         meta:{
             createAt:String;
             pdateAt:String;
@@ -73,11 +144,19 @@
         method:'POST',
         body:{userId: route.params.userId}
     }))
-    const avatarURL =  baseURL + "/api/" + userData.value?.avatar
-    const userName = userData.value?.username
-    const roles = userData.value?.roles
-    const followersCnt = userData.value?.followers.length
-    const followingCnt = userData.value?.following.length
+    if (!userData.value){
+        navigateTo('/')
+    }
+    const avatarURL = computed(() => baseURL + "/api/" + userData.value?.avatar)
+    const userName = computed(() => userData.value?.username)
+    const roles = computed(() => userData.value?.roles)
+    const followersCnt = computed(() => userData.value?.followers.length)
+    const followingCnt = computed(() => userData.value?.following.length)
+    const pubpostsCnt = computed(() => userData.value?.pubposts.length)
+    const commentsCnt = computed(() => userData.value?.comments.length)
+    const messagesCnt = computed(() => userData.value?.messages.length)
+    const favopostsCnt = computed(() => userData.value?.favoposts.length)
+
 
     const followersDialog = ref(false)
     const followingDialog = ref(false)
@@ -85,7 +164,7 @@
     const currentFollowersPage = ref(1)
     const pageSize = 5
     const pageFollowers = computed(() => {
-        if (followersCnt === 0){
+        if (followersCnt.value === 0){
             return []
         }
         const start = (currentFollowersPage.value - 1) * pageSize
@@ -98,7 +177,7 @@
 
     const currentFollowingPage = ref(1)
     const pageFollowing = computed(() => {
-        if (followingCnt === 0){
+        if (followingCnt.value === 0){
             return []
         }
         const start = (currentFollowingPage.value - 1) * pageSize
@@ -109,6 +188,41 @@
         currentFollowingPage.value = newPage
     }
 
+    async function changleUnFollow(){
+        try{
+            const data = await $fetch('/api/unFollow',{
+                method:'POST',
+                body:{selfUserId:auth.userId, otherUserId:userData.value?._id}
+            }) as {res:string}
+            if (data.res === '1'){
+                ElMessage.success({
+                    message:'已取消关注',
+                    offset:50
+                })
+            }
+        }catch(e){
+            console.error(e)
+        }
+        refreshUser()
+    }
+    async function changleAddFollow(){
+        try{
+            const data = await $fetch('/api/addFollow',{
+                method:'POST',
+                body:{selfUserId:auth.userId, otherUserId:userData.value?._id}
+            }) as {res: string}
+            if (data.res === '1'){
+                ElMessage.success({
+                    message:'关注成功',
+                    offset:50
+                })
+            }
+        }catch(e){
+            console.error(e)
+        }
+        refreshUser()
+    }
+
     async function cs(){
         console.log(userData.value?.following)
     }
@@ -116,6 +230,47 @@
 </script>
     
 <style scoped>
+    .mainRightHeaderItemRightTip{
+        color:#9d9da3;
+        font-size: 14px;
+        white-space: nowrap;
+    }
+    .mainRightHeaderItemRightNumber{
+        font-size: 25px;
+        font-weight: bold;
+    }
+    .mainRightHeaderItemRight{
+        display: flex;
+        flex-direction: column;
+    }
+    .mainRightHeaderItemLeft{
+        font-size: 35px;
+        color:#2a72ee;
+        margin-right: 10px;
+    }
+    .mainRightHeaderItem{
+        border: 1px solid darkgray;
+        box-shadow: 0 0 15px rgba(0,0,0,0.3);
+        display: flex;
+        padding:10px 20px;
+        width: 150px;
+        border-radius: 20px;
+    }
+    .mainRightHeader{
+        display: flex;
+        justify-content: space-around;
+    }
+    .mainRight{
+        border:1px solid blue;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+    }
+    .mainLeftFooterEdit{
+        display: flex;
+        flex-direction: column;
+    }
+    
     .joinDateItem{
         color: gray;
         display: flex;
@@ -130,6 +285,7 @@
         line-height: 35px;
         padding: 0 15px;
         border-radius: 10px;
+        white-space: nowrap;
     }
     .followItem:hover{
         background-color: #eeeeef;
@@ -169,6 +325,7 @@
         display: flex;
         flex-direction: column;
         padding: 0 20px;
+        padding-bottom: 80px;
     }
     .userIdmain{
         
