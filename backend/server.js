@@ -5,6 +5,7 @@ import fs from 'fs'
 import { createServer } from 'http'
 import cors from 'cors'
 import dayjs from 'dayjs'
+import multer from 'multer'
 
 import { db } from './db.js'
 
@@ -65,3 +66,8 @@ app.use('/api', unFollow)
 
 import addFollow from './routes/addFollow.js'
 app.use('/api', addFollow)
+
+const avatarDir = path.join(__dirname,'uploads/avatar')
+if (!fs.existsSync(avatarDir)) fs.mkdirSync(avatarDir, {recursive: true})
+import uploadAvatar from './routes/uploadAvatar.js'
+app.use('/api', uploadAvatar)

@@ -2,7 +2,9 @@ import { useAuthStore } from "#imports"
 
 export const useCheckAuth = async ()=>{
     const auth = useAuthStore()
+    
     if (auth.isLoggedIn){
+        auth.updated = !auth.updated
         return true
     }
     try{
@@ -20,12 +22,14 @@ export const useCheckAuth = async ()=>{
         if (res === '1'){
             auth.isLoggedIn = true
             auth.userId = userId
+            auth.updated = !auth.updated
             return true
         }
         else if (res === '2'){
             auth.isLoggedIn = true
             localStorage.setItem('accessToken', data.accessToken)
             auth.userId = userId
+            auth.updated = !auth.updated
             return true
         }
         else{

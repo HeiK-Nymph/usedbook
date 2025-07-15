@@ -11,7 +11,7 @@ export const useLogout = async ()=>{
             method:'POST',
         })
         const route = useRoute()
-        if (route.path.startsWith('/user/')){
+        if (route.path.startsWith('/user/') || route.path.startsWith('/settings')){
             navigateTo('/')
         }
     }catch(e){

@@ -50,13 +50,17 @@
                     >
                         <template #reference>
                             <NuxtLink :to="{path:'/user/' + auth.userId}" class="nuxtlink" style="height: 60px;">
-                                <el-avatar src="/爱丽丝头像.png" class="cursor-pointer" style="--size: 90%; height: var(--size); width: auto;"  />
+                                <el-avatar :src="avatarURL" class="cursor-pointer" style="--size: 55px; height: var(--size); width: var(--size);"  />
                             </NuxtLink>
                         </template>
                         <div class="user-menu">
                             <NuxtLink :to="{path:'/user/' + auth.userId}" class="nuxtlink menuItem">
                                 <el-icon><User /></el-icon>
                                 用户主页
+                            </NuxtLink>
+                            <NuxtLink to="/settings" class="nuxtlink menuItem">
+                                <el-icon><User /></el-icon>
+                                设置信息
                             </NuxtLink>
                             <div class="logOff" @click="logoutBto">
                                 <el-icon><ArrowLeftBold /></el-icon>
@@ -83,8 +87,19 @@
 </template>
     
 <script setup lang='ts'>
+    
     import { useAuthStore } from '~/stores/auth';
+    import { baseURL } from '#imports'
     const auth = useAuthStore()
+    import { type userInfo } from '~/types';
+
+    const updated = computed(() => auth.updated)
+    const {data:userData, refresh:refreshUser} = await useAsyncData<userInfo>(`userInfo-${auth.userId}`,() => $fetch('/api/getUserInfo',{
+        method:'POST',
+        body:{userId: auth.userId},
+    }),{immediate:false, watch:[updated]})
+    
+    const avatarURL = computed(() => baseURL + "/api" + userData.value?.avatar)
     
     function cs(){
         
@@ -130,6 +145,7 @@
         cursor: pointer;
         padding: 3px;
         border-radius: 8px;
+        margin-top: 5px;
     }
     .logOff:hover{
         background-color: #e70b5d;
@@ -138,6 +154,7 @@
     .menuItem{
         padding: 3px;
         border-radius: 8px;
+        margin-top: 5px;
     }
     .menuItem:hover{
         background-color: #d4d4d8;

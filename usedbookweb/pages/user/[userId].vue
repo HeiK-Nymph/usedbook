@@ -2,7 +2,7 @@
     <div class="userIdmain">
         <div class="mainLeft">
             <div class="mainLeftAvatar">
-                <el-avatar :src="avatarURL" style="height: 150px; width: auto; border: 2px solid rgba(105, 105, 105, 0.2);"/>
+                <el-avatar :src="avatarURL" style="height: 150px; width: 150px; border: 2px solid rgba(105, 105, 105, 0.2);"/>
             </div>
             <div class="mainLeftName">
                 {{ userName }}
@@ -42,7 +42,7 @@
             <div class="mainLeftFooter">
                 <div class="mainLeftFooterEdit" v-if="auth.userId === route.params.userId">
                     <div style="width: 100%; display: flex; flex-direction: column;">
-                        <el-button type="primary" plain><el-icon><EditPen /></el-icon><span>编辑信息</span></el-button>
+                        <el-button @click="toSettingsBto" type="primary" plain><el-icon><EditPen /></el-icon><span>编辑信息</span></el-button>
                     </div>
                     <div style="width: 100%; display: flex; flex-direction: column; margin-top: 10px;">
                         <el-button type="primary"><el-icon><Upload /></el-icon><span>发布帖子</span></el-button>
@@ -114,32 +114,7 @@
     import { baseURL } from '#imports'
     const auth = useAuthStore()
     const route = useRoute()
-    interface follow{
-        _id:string;
-        avatar:string;
-        username:string;
-    }
-    interface anthorArr{
-        _id:string
-    }
-    interface userInfo{
-        _id:string;
-        avatar:string;
-        username:string;
-        roles:string;
-        bio:string;
-        followers:Array<follow>;
-        following:Array<follow>;
-        pubposts:Array<anthorArr>;
-        favoposts:Array<anthorArr>;
-        messages:Array<anthorArr>;
-        comments:Array<anthorArr>;
-        meta:{
-            createAt:String;
-            pdateAt:String;
-            lastLogin:String;
-        }
-    }
+    import { type userInfo } from '~/types';
     const {data:userData, refresh:refreshUser} = await useAsyncData<userInfo>(`userInfo-${route.params.userId}`,() => $fetch('/api/getUserInfo',{
         method:'POST',
         body:{userId: route.params.userId}
@@ -147,7 +122,7 @@
     if (!userData.value){
         navigateTo('/')
     }
-    const avatarURL = computed(() => baseURL + "/api/" + userData.value?.avatar)
+    const avatarURL = computed(() => baseURL + "/api" + userData.value?.avatar)
     const userName = computed(() => userData.value?.username)
     const roles = computed(() => userData.value?.roles)
     const followersCnt = computed(() => userData.value?.followers.length)
@@ -223,6 +198,10 @@
         refreshUser()
     }
 
+    async function toSettingsBto(){
+        await navigateTo('/settings')
+    }
+
     async function cs(){
         console.log(userData.value?.following)
     }
@@ -253,7 +232,8 @@
         box-shadow: 0 0 15px rgba(0,0,0,0.3);
         display: flex;
         padding:10px 20px;
-        width: 150px;
+        max-width: 150px;
+        width: 100%;
         border-radius: 20px;
     }
     .mainRightHeader{
@@ -328,7 +308,7 @@
         padding-bottom: 80px;
     }
     .userIdmain{
-        
+        margin-top: 20px;
         border: 1px solid red;
         margin-left: 5%;
         margin-right: 5%;

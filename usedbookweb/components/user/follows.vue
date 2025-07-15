@@ -1,7 +1,7 @@
 <template>
     <div class="followersItemMain">
         <div class="followersItemMainAvatar">
-            <el-avatar :src="avatarURL" style="height: 50px; width: auto;"/>
+            <el-avatar :src="avatarURL" style="height: 50px; width: 50px;"/>
         </div>
         <div class="followersItemMainUserName">
             <NuxtLink class="followersItemMainUserNameItem" :to="{path:'/user/' + userId}">{{ userName }}</NuxtLink>
