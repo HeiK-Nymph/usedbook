@@ -1,8 +1,10 @@
+import { baseURL } from "~/composables/constants"
+
 export default defineEventHandler(async (event)=>{
     const refreshToken = getCookie(event, 'refreshToken')
     try{
         await $fetch('/api/logout',{
-            baseURL:'http://192.168.1.2:8000',
+            baseURL:baseURL,
             method:'POST',
             body:{refreshToken:refreshToken}
         })

@@ -71,3 +71,12 @@ const avatarDir = path.join(__dirname,'uploads/avatar')
 if (!fs.existsSync(avatarDir)) fs.mkdirSync(avatarDir, {recursive: true})
 import uploadAvatar from './routes/uploadAvatar.js'
 app.use('/api', uploadAvatar)
+
+import setUserName from './routes/setUserName.js'
+app.use('/api', setUserName)
+
+import setUserBio from './routes/setUserBio.js'
+app.use('/api', setUserBio)
+
+import changePassword from './routes/changePassword.js'
+app.use('/api', changePassword)

@@ -15,7 +15,6 @@ export default defineEventHandler( async (event) => {
         if (file.data.byteLength > 2 * 1024 * 1024){
             return {res:'2'}
         }
-        console.log('?',file.filename)
         const form = new FormData()
         form.append('avatar', new Blob([file.data]), file.filename)
         if (typeof userId === 'string') {
