@@ -45,7 +45,7 @@
                         <el-button @click="toSettingsBto" type="primary" plain><el-icon><EditPen /></el-icon><span>编辑信息</span></el-button>
                     </div>
                     <div style="width: 100%; display: flex; flex-direction: column; margin-top: 10px;">
-                        <el-button type="primary"><el-icon><Upload /></el-icon><span>发布帖子</span></el-button>
+                        <el-button @click="toUploadPost" type="primary"><el-icon><Upload /></el-icon><span>发布帖子</span></el-button>
                     </div>
                 </div>
                 <div v-else>
@@ -201,7 +201,9 @@
     async function toSettingsBto(){
         await navigateTo('/settings')
     }
-
+    async function toUploadPost(){
+        await navigateTo('/upload/post')
+    }
     async function cs(){
         console.log(userData.value?.following)
     }

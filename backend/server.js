@@ -80,3 +80,11 @@ app.use('/api', setUserBio)
 
 import changePassword from './routes/changePassword.js'
 app.use('/api', changePassword)
+
+const postImgDir = path.join(__dirname,'uploads/postImg')
+if (!fs.existsSync(postImgDir)) fs.mkdirSync(postImgDir, {recursive: true})
+import uploadPostImg from './routes/uploadPostImg.js'
+app.use('/api', uploadPostImg)
+
+import uploadPost from './routes/uploadPost.js'
+app.use('/api', uploadPost)

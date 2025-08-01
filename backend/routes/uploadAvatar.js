@@ -31,7 +31,7 @@ const router = express.Router()
 
 router.post('/upload/avatar', upload.single('avatar'), async (req, res) => {
     if (!req.file){
-        return res.status(400).json({
+        return res.json({
             res:'2',
             avatarURL:null
         })

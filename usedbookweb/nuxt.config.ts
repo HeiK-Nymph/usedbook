@@ -12,5 +12,5 @@ export default defineNuxtConfig({
       zIndex:10000,
     },
     defaultLocale:'zh-cn'
-  }
+  },
 })

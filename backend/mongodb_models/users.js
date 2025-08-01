@@ -24,7 +24,6 @@ const userSchema = mongoose.Schema({
     followers:{
         type:[mongoose.Schema.Types.ObjectId],
         ref:'users',
-        unique:true
     },
     following:{
         type:[mongoose.Schema.Types.ObjectId],
@@ -54,6 +53,7 @@ const userSchema = mongoose.Schema({
         lastLogin:String,
     }
 })
+
 
 userSchema.methods.verifyPassword = async function(inputPassword){
     return await bcrypt.compare(inputPassword, this.passwordHash)
