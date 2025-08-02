@@ -9,7 +9,7 @@
             </div>
             <div class="itemInput">
                 <div style="width: 100px;">标签：</div>
-                <el-input v-model="postTag" placeholder="标签请用#开头的格式来添加，可以添加多个标签，错误格式不识别" size="large" maxlength="100" show-word-limit/>
+                <el-input v-model="postTag" placeholder="标签请用#开头的格式来添加，可以添加多个标签，最多五个标签，错误格式不识别" size="large" maxlength="100" show-word-limit/>
             </div>
             <Editor ref="editorRef"/>
             <div class="pubBto">

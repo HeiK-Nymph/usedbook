@@ -6,42 +6,47 @@
         </NuxtLink>
     </div>
     <div class="bookGrid">
-        <NuxtLink :to="{path:'/' + book._id}" v-for="book in books" :key="book._id" class="bookItem">
-            {{ book.title }}
-        </NuxtLink>
+        <UsedbooksPostsItemView v-for="post in postsArr" :key="post._id"
+        :postId="post._id"
+        :title="post.title"
+        :tags="post.tags"
+        :cover="post.imgURL[0]"
+        />
     </div>
 </template>
     
 <script setup lang='ts'>
-    
-    
+    import { type Tposts } from '~/types';
+    const {data:postsData, refresh:refreshPosts} = await useAsyncData<Tposts>(
+        'index-posts',
+        () => $fetch('/api/getPosts',{
+            method:'POST',
+            body:{page:1}
+        })
+    )
+    const postsArr = computed(() => postsData.value?.content)
 
-const books = ref([
-  { _id: '1', title: 'JavaScript高级编程' },
-  { _id: '2', title: 'Vue3实战指南' },
-  { _id: '3', title: 'React实战精解' },
-  { _id: '4', title: 'TypeScript入门' },
-  { _id: '5', title: 'Node.js开发指南' },
-  { _id: '6', title: '前端工程化实践' },
-  { _id: '7', title: 'CSS权威指南' },
-  { _id: '8', title: 'Web性能优化' }
-])
+
 </script>
     
 <style scoped>
     .bookGrid{
         display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 20px;
+        grid-template-columns: repeat(4, 250px);
+        justify-content: center;
+        justify-items: center;
+        
+        
+        gap: 40px;
     }
-    @media (max-width:768px){
+    @media (max-width:1200px){
         .bookGrid{
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(3, 250px);
         }
     }
-    @media (max-width:480px) {
+    @media (max-width:850px) {
         .bookGrid{
-            grid-template-columns: repeat(1, 1fr);
+            grid-template-columns: repeat(2, 200px);
         }
     }
     .header{

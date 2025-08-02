@@ -24,3 +24,21 @@ export interface userInfo{
         lastLogin:String;
     }
 }
+
+export interface TpostsCnt{
+    res:string;
+    tip:string;
+    postsCnt:number
+}
+
+export interface Tposts{
+    res:string,
+    tip:string,
+    content:{
+        _id:string,
+        imgCount:number,
+        imgURL:string[],
+        tags:string[],
+        title:string
+    }[]
+}

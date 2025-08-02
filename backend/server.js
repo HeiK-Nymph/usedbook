@@ -88,3 +88,9 @@ app.use('/api', uploadPostImg)
 
 import uploadPost from './routes/uploadPost.js'
 app.use('/api', uploadPost)
+
+import getPostsCnt from './routes/getPostsCnt.js'
+app.use('/api', getPostsCnt)
+
+import getPosts from './routes/getPosts.js'
+app.use('/api', getPosts)

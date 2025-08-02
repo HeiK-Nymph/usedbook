@@ -8,7 +8,7 @@ export const ussePubPost = async (postId:string, CStitle:string, CStag:string, c
         })
         return
     }
-    const tags = CStag.replace(/\s/g, '').replace(/#+/g, '#').split('#').filter(tag => tag !== '').map(tag => `#${tag}`)
+    const tags = CStag.replace(/\s/g, '').replace(/#+/g, '#').split('#').filter(tag => tag !== '').filter((tag, index, arr) => arr.indexOf(tag) === index).map(tag => `#${tag}`)
     try{
         const data = await $fetch('/api/upload/post',{
             method:'POST',

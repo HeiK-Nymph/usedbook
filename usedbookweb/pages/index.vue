@@ -44,7 +44,6 @@
                 </el-carousel>
             </div>
         </div>
-        <button @click="cs">测试</button>
         <section>
             <IndexContent/>
         </section>
@@ -63,9 +62,7 @@
     onBeforeMount(async ()=>{
         await useCheckAuth()
     })
-    async function cs(){
-        
-    }
+
     const featuredBooks = ref([
   {
     title: 'JavaScript高级程序设计',

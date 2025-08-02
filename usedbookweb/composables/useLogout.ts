@@ -11,10 +11,9 @@ export const useLogout = async ()=>{
             method:'POST',
         })
         const route = useRoute()
-        if (route.path.startsWith('/user/') || route.path.startsWith('/settings') || route.path.startsWith('/upload/post')){
-            navigateTo('/')
-        }
+        navigateTo('/')
     }catch(e){
         console.error(e)
+        navigateTo('/')
     }
 }

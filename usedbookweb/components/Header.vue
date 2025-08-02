@@ -25,7 +25,6 @@
                         </NuxtLink>
                     </li>
                 </ul>
-                <button @click="cs">测试</button>
             </div>
             <div class="headCenterRight">
                 <el-tooltip content="搜索书籍" placement="bottom" :show-after="200" :hide-after="0" >
@@ -101,9 +100,7 @@
     
     const avatarURL = computed(() => baseURL + "/api" + userData.value?.avatar)
     
-    function cs(){
-        
-    }
+
 
     async function logoutBto(){
         try{

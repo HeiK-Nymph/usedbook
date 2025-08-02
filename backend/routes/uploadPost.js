@@ -17,12 +17,13 @@ router.post('/upload/post', async (req, res) => {
     if (postId){
         postIdObj = mongoose.Types.ObjectId.createFromHexString(postId)
     }
+    const trimmedTags = Array.isArray(tags) ? tags.slice(0, 5) : []
     try{
         if (postIdObj){
             await postsModel.updateOne({_id:postIdObj},{
                 authorId:userIdObj,
                 title:title,
-                tags:tags,
+                tags:trimmedTags,
                 content:content,
                 status:'review'
             })
@@ -34,7 +35,7 @@ router.post('/upload/post', async (req, res) => {
             await postsModel.create({
                 authorId:userIdObj,
                 title:title,
-                tags:tags,
+                tags:trimmedTags,
                 content:content,
                 status:'review'
             })
