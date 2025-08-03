@@ -7,7 +7,7 @@ router.use(express.json())
 router.post('/getPosts', async (req, res) => {
     try{
         const {page} = req.body
-        const data = await postsModel.find({status:'finish'}).sort({updatedAt:-1}).skip((page - 1) * 24).limit(24)
+        const data = await postsModel.find({status:'finish'}).sort({createdAt:-1}).skip((page - 1) * 24).limit(24)
         return res.json({
             res:'1',
             tip:'获取数据成功',

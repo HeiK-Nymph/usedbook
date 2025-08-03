@@ -25,7 +25,8 @@ router.post('/upload/post', async (req, res) => {
                 title:title,
                 tags:trimmedTags,
                 content:content,
-                status:'review'
+                status:'review',
+                
             })
             return res.json({
                 res:'1',
@@ -37,7 +38,8 @@ router.post('/upload/post', async (req, res) => {
                 title:title,
                 tags:trimmedTags,
                 content:content,
-                status:'review'
+                status:'review',
+                
             })
             return res.json({
                 res:'1',

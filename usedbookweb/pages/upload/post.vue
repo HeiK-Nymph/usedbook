@@ -15,6 +15,7 @@
             <div class="pubBto">
                 <el-button @click="pub" type="primary" style="width: 200px; height: 35px;">发布</el-button>
             </div>
+            <div style="font-size: 10px; color:darkgrey; display: flex; justify-content: center; margin-top: 5px;">tip:图片一定要手动调整一次大小，不然的话可能会出现意外状况</div>
         </div>
         
     </div>

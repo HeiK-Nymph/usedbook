@@ -4,6 +4,9 @@ export default defineEventHandler(async (event) => {
     try{
         
         const userId = await readBody(event)
+        if (!userId){
+            return null
+        }
         const data = await $fetch('/api/userInfo/get',{
             baseURL:baseURL,
             method:'POST',
@@ -13,6 +16,6 @@ export default defineEventHandler(async (event) => {
     }catch(e){
         console.error(e)
         
-        return {res:'2'}
+        return null
     }
 })

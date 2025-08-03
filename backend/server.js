@@ -94,3 +94,12 @@ app.use('/api', getPostsCnt)
 
 import getPosts from './routes/getPosts.js'
 app.use('/api', getPosts)
+
+import getPostItem from './routes/getPostItem.js'
+app.use('/api', getPostItem)
+
+import addFavoPost from './routes/addFavoPost.js'
+app.use('/api', addFavoPost)
+
+import unFavoPost from './routes/unFavoPost.js'
+app.use('/api', unFavoPost)

@@ -6,6 +6,9 @@ interface follow{
 interface anthorArr{
     _id:string
 }
+interface favoposts{
+    _id:string,
+}
 export interface userInfo{
     _id:string;
     avatar:string;
@@ -15,7 +18,7 @@ export interface userInfo{
     followers:Array<follow>;
     following:Array<follow>;
     pubposts:Array<anthorArr>;
-    favoposts:Array<anthorArr>;
+    favoposts:Array<favoposts>;
     messages:Array<anthorArr>;
     comments:Array<anthorArr>;
     meta:{
@@ -41,4 +44,30 @@ export interface Tposts{
         tags:string[],
         title:string
     }[]
+}
+
+export interface TpostItem{
+    res:string,
+    tip:string,
+    content:{
+        _id:string,
+        title:string,
+        content:string,
+        status:string,
+        tags:string[],
+        authorId:{
+            _id:string,
+            avatar:string,
+            username:string
+        },
+        comments:{
+            _id:string,
+            userId:string,
+            content:string,
+            status:string
+        }[],
+        createdAt:string,
+        favo:string[]
+    },
+    
 }

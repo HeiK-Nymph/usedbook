@@ -17,7 +17,15 @@ const postSchema = new mongoose.Schema({
     authorId:{
         type:mongoose.Schema.Types.ObjectId,
         ref:'users',
-    }
+    },
+    comments:{
+        type:[mongoose.Schema.Types.ObjectId],
+        ref:'comments'
+    },
+    favo:{
+        type:[mongoose.Schema.Types.ObjectId],
+        ref:'users',
+    },
 },{timestamps:true})
 
 postSchema.index({createdAt:-1})
