@@ -33,6 +33,35 @@
                         </div>
                     </div>
                 </div>
+                <div class="pubComment">
+                    <div class="pubCommentTip">
+                        看帖是喜欢，评论才是真爱：
+                    </div>
+                    <div class="pubCommentInput">
+                        <el-input
+                        v-model="commentVal"
+                        type="textarea"
+                        :autosize="{ minRows: 4 }"
+                        maxlength="300"
+                        show-word-limit
+                        resize="none"
+                        >
+                        </el-input>
+                    </div>
+                    <div class="pubCommentBto">
+                        <el-button style="width: 90px; height: 35px;" type="primary" @click="handlePubComment">评论</el-button>
+                    </div>
+                </div>
+                <div class="commentsContent">
+                    <el-radio-group v-model="commentsModel">
+                        <el-radio-button value="all">全部评论</el-radio-button>
+                        <el-radio-button value="onlyAuthor">只看楼主</el-radio-button>
+                    </el-radio-group>
+                    <PostCommentItem v-for="comment in commentArr" :key="comment._id"
+                    :selfId="auth.userId"
+                    :comment = comment
+                    />
+                </div>
             </div>
             <div class="postItemMainRight">
                 你好
@@ -71,10 +100,10 @@
         return userData.value?.favoposts.some(item => item._id === postId) ?? false
     })
     
-    
-    
-    
+
+    const userStatus = userData.value?.status
     const title = postData.value?.content.title
+    const authorId = postData.value?.content.authorId._id
     const authorName = postData.value?.content.authorId.username
     const createdAt = postData.value?.content.createdAt
     let createdTime = ""
@@ -161,9 +190,88 @@
         await navigateTo('/login')
     }
 
+    const commentVal = ref("")
+    async function handlePubComment(){
+        try{
+            const data = await $fetch('/api/upload/comment',{
+                method:'POST',
+                body:{
+                    userId:auth.userId,
+                    userStatus: userStatus,
+                    postId:postId,
+                    commentVal:commentVal.value
+                }
+            }) as {res:string, tip:string}
+            if (data.res === '1'){
+                ElMessage.success({
+                    message:data.tip,
+                    offset:50
+                })
+                commentVal.value = ""
+            }else if (data.res === '4'){
+                ElMessage.error({
+                    message:data.tip,
+                    offset:50
+                })
+                await navigateTo('/login')
+            }else{
+                ElMessage.error({
+                    message:data.tip,
+                    offset:50
+                })
+            }
+        }catch(e){
+            console.error(e)
+            ElMessage.warning({
+                message:'网络错误',
+                offset:50
+            })
+        }
+        await refreshPost()
+    }
+
+    const commentsModel = ref('all')
+    const commentArr = computed(() => {
+        if (commentsModel.value === 'all'){
+            return postData.value?.content.comments
+        }else{
+            return postData.value?.content.comments.filter((p) => {
+                return p.userId._id === authorId
+            })
+        }
+    })
+
+
 </script>
     
 <style scoped>
+    .commentsContent{
+        margin-top: 15px;
+        background-color: white;
+        border-radius: 15px;
+        padding: 15px;
+    }
+    .pubCommentBto{
+        margin-top: 15px;
+        display: flex;
+        justify-content: flex-end;
+    }
+    .pubCommentInput{
+        margin-top: 15px;
+    }
+    .pubCommentTip{
+        font-size: 13px;
+        color: darkgray;
+    }
+    .pubComment{
+        background-color: white;
+        border-radius: 15px;
+        margin-top: 20px;
+        padding: 30px;
+        
+        display: flex;
+        flex-direction: column;
+    }
     .postItemMainLeftContentBottom{
         font-size: 30px;
         display: flex;
@@ -202,12 +310,12 @@
         flex-direction: column;
         background-color: white;
         padding: 35px;
-        width: 500px;
         border-radius: 15px;
     }
     .postItemMainLeft{
         display: flex;
         flex-direction: column;
+        width: 800px;
     }
     .postItemMain{
         display: flex;

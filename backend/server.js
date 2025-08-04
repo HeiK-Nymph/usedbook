@@ -103,3 +103,6 @@ app.use('/api', addFavoPost)
 
 import unFavoPost from './routes/unFavoPost.js'
 app.use('/api', unFavoPost)
+
+import uploadComment from './routes/uploadComment.js'
+app.use('/api', uploadComment)

@@ -12,7 +12,14 @@ router.post('/getPostItem', async (req, res) => {
         return res.json(null)
     }
     try{
-        const data = await postsModel.findOne({_id:postId}).populate('authorId', 'username avatar').populate('comments')
+        const data = await postsModel.findOne({_id:postId}).populate('authorId', 'username avatar')
+            .populate({
+                path:'comments',
+                populate:{
+                    path:'userId',
+                    select:'username avatar'
+                }
+            })
         return res.json({
             res:'1',
             tip:'获取成功',

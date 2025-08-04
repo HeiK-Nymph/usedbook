@@ -15,6 +15,7 @@ export interface userInfo{
     username:string;
     roles:string;
     bio:string;
+    status:string;
     followers:Array<follow>;
     following:Array<follow>;
     pubposts:Array<anthorArr>;
@@ -62,9 +63,14 @@ export interface TpostItem{
         },
         comments:{
             _id:string,
-            userId:string,
+            userId:{
+                _id:string,
+                username:string,
+                avatar:string
+            }
             content:string,
-            status:string
+            status:string,
+            createdAt:string
         }[],
         createdAt:string,
         favo:string[]
